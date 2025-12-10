@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from airflow.decorators import dag, task
+from airflow.sdk import dag, task
 
 
 def _log(message: str) -> None:
@@ -20,7 +20,7 @@ def say_hello(context: dict[str, str]) -> None:
 
 @task
 def describe_demo() -> None:
-    _log("This DAG demonstrates a lightweight Airflow deployment for evaluation.")
+    _log("This DAG demonstrates a Airflow deployment for evaluation.")
 
 
 @dag(
