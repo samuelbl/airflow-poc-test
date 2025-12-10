@@ -19,7 +19,7 @@ set "COMPOSE_CMD=%CONTAINER_ENGINE% compose"
 
 :: ensure UID is set for Linux hosts running via WSL or similar
 if not defined AIRFLOW_UID (
-  for /f "tokens=*" %%i in ('%CONTAINER_ENGINE% run --rm --entrypoint sh apache/airflow:3.1.3 -c "id -u"') do set "AIRFLOW_UID=%%i"
+  for /f "tokens=*" %%i in ('%CONTAINER_ENGINE% run --rm --entrypoint sh apache/airflow:3.1.4 -c "id -u"') do set "AIRFLOW_UID=%%i"
 )
 
 %COMPOSE_CMD% pull
@@ -28,18 +28,18 @@ if errorlevel 1 (
   exit /b 1
 )
 
-%COMPOSE_CMD% --profile setup up airflow-init
+%COMPOSE_CMD% up airflow-init
 if errorlevel 1 (
   echo Initialization failed.
   exit /b 1
 )
 
-%COMPOSE_CMD% up -d airflow-webserver airflow-scheduler redis postgres
+%COMPOSE_CMD% up -d airflow-apiserver airflow-scheduler airflow-worker airflow-triggerer airflow-dag-processor redis postgres
 if errorlevel 1 (
   echo Services failed to start.
   exit /b 1
 )
 
-echo Airflow PoC is starting. Webserver should be available at http://localhost:8080 once healthy.
+echo Airflow PoC is starting. API/UI should be available at http://localhost:8080 once healthy.
 popd
 endlocal
