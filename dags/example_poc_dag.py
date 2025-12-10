@@ -26,7 +26,7 @@ def describe_demo() -> None:
 @dag(
     dag_id="airflow_poc_demo",
     schedule="@daily",
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["poc"],
 )
